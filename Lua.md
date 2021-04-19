@@ -72,6 +72,50 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
 }
 ```
 
+### class
+```
+-- 类
+function class(class_name, super)
+    local cls = {};
+    cls.name = class_name;
+
+    if (super) then
+        setmetatable(cls, { __index = super });
+        cls.super = super;
+    else
+        cls.ctor = function() end;
+    end
+
+    function cls.new(...)
+        local instance = {};
+        setmetatable(instance, { __index = cls });
+        instance.ctor(...);
+
+        return instance;
+    end
+
+    return cls;
+end
+
+-- 基类
+local A = class("A");
+A.ctor = function()
+    print("A");
+end
+
+-- 派生类
+local B = class("B", A)
+B.ctor = function()
+    -- 主动调用基类构造函数
+    B.super.ctor();
+    print("B");
+end
+
+-- 创建类的对象
+local a = A.new();
+local b = B.new();
+```
+
 ### component
 ```
 -- 聚合组件
