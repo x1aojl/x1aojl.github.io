@@ -111,9 +111,14 @@ B.ctor = function()
     print("B");
 end
 
--- 创建类的对象
+-- 测试
 local a = A.new();
 local b = B.new();
+
+-- 输出
+-- A
+-- A
+-- B
 ```
 
 ### component
