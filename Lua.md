@@ -163,8 +163,7 @@ B:func_b();
 local t = { 1, a = 2, "3", b = 4, nil, 5}
 
 -- ipairs
--- 只遍历数组部分
--- 遇到空值就中断
+-- 只遍历数组部分的整数元素，遇到空值就中断
 for i, v in ipairs(t) do
     print(string.format("i = %s, v = %s", i, v));
 end
@@ -174,8 +173,7 @@ end
 -- i = 2, v = 3
 
 -- pairs
--- 先遍历数组部分
--- 再遍历哈希部分
+-- 先遍历数组部分，再遍历哈希部分
 for k, v in pairs(t) do
     print(string.format("k = %s, v = %s", k, v));
 end
