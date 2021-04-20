@@ -185,3 +185,19 @@ end
 -- k = a, v = 2
 -- k = b, v = 4
 ```
+
+### 计算表的长度 # 和 pairs
+```
+local t = { 1, nil, a = 2, "3", nil, b = 4 }
+
+-- # 统计表的数组部分最后一个有效元素前所有元素的数量
+print(string.format("#t = %s", #t)); -- #t = 3
+
+-- pairs 会遍历表的数组部分和哈希部分所有的有效元素
+local length = 0;
+for __, __ in pairs(t) do
+    length = length + 1;
+end
+
+print(string.format("length = %s", length)); -- length = 4
+```
