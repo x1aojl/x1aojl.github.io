@@ -201,3 +201,71 @@ end
 
 print(string.format("length = %s", length)); -- length = 4
 ```
+
+### C++ 调用 Lua
+1. lua_open 创建 Lua 环境 </br>
+```
+#define lua_open()	luaL_newstate()
+```
+2. luaL_openlibs 打开 Lua 标准库 </br>
+```
+LUALIB_API void (luaL_openlibs) (lua_State *L); 
+```
+3. luaL_dofile 加载运行 Lua 脚本 </br>
+```
+#define luaL_dofile(L, fn) (luaL_loadfile(L, fn) || lua_pcall(L, 0, LUA_MULTRET, 0))
+```
+4. lua_getglobal 获取 Lua 脚本中的函数 </br>
+```
+#define lua_getglobal(L,s)	lua_getfield(L, LUA_GLOBALSINDEX, (s))
+```
+5. push functions (C -> stack) 传递参数给 Lua 函数 </br>
+``` 
+LUA_API void  (lua_pushnil) (lua_State *L);
+LUA_API void  (lua_pushnumber) (lua_State *L, lua_Number n);
+LUA_API void  (lua_pushinteger) (lua_State *L, lua_Integer n);
+LUA_API void  (lua_pushlstring) (lua_State *L, const char *s, size_t l);
+LUA_API void  (lua_pushstring) (lua_State *L, const char *s);
+LUA_API const char *(lua_pushvfstring) (lua_State *L, const char *fmt, va_list argp);
+LUA_API const char *(lua_pushfstring) (lua_State *L, const char *fmt, ...);
+LUA_API void  (lua_pushcclosure) (lua_State *L, lua_CFunction fn, int n);
+LUA_API void  (lua_pushboolean) (lua_State *L, int b);
+LUA_API void  (lua_pushlightuserdata) (lua_State *L, void *p);
+LUA_API int   (lua_pushthread) (lua_State *L);
+``` 
+6. call functions (run Lua code) 调用 Lua 函数 </br>
+``` 
+LUA_API void  (lua_call) (lua_State *L, int nargs, int nresults);
+LUA_API int   (lua_pcall) (lua_State *L, int nargs, int nresults, int errfunc);
+LUA_API int   (lua_cpcall) (lua_State *L, lua_CFunction func, void *ud);
+```
+7. access functions (stack -> C) 获取 Lua 函数的返回值 </br>
+``` 
+LUA_API lua_Number      (lua_tonumber) (lua_State *L, int idx);
+LUA_API lua_Integer     (lua_tointeger) (lua_State *L, int idx);
+LUA_API int             (lua_toboolean) (lua_State *L, int idx);
+LUA_API const char     *(lua_tolstring) (lua_State *L, int idx, size_t *len);
+LUA_API size_t          (lua_objlen) (lua_State *L, int idx);
+LUA_API lua_CFunction   (lua_tocfunction) (lua_State *L, int idx);
+LUA_API void	       *(lua_touserdata) (lua_State *L, int idx);
+LUA_API lua_State      *(lua_tothread) (lua_State *L, int idx);
+LUA_API const void     *(lua_topointer) (lua_State *L, int idx);
+```
+
+### Lua 调用 C++
+1. lua_open 创建 Lua 环境 </br>
+```
+#define lua_open()	luaL_newstate()
+```
+2. luaL_openlibs 打开 Lua 标准库 </br>
+```
+LUALIB_API void (luaL_openlibs) (lua_State *L); 
+```
+3. lua_register 注册 C++ 函数
+``` 
+#define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
+```
+4. luaL_dofile 加载运行 Lua 脚本 </br>
+```
+#define luaL_dofile(L, fn) (luaL_loadfile(L, fn) || lua_pcall(L, 0, LUA_MULTRET, 0))
+```
