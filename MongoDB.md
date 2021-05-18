@@ -84,4 +84,7 @@ Esc + : + wq!
 
 // 重启MongoDB
 sudo service mongod restart
+
+// 重启MongoDB报错, 需先手动删除报错的链接文件再重启 sudo rm -f /tmp/mongodb-27017.sock
+2021-05-18T15:47:14.663+0800 E NETWORK  [initandlisten] Failed to unlink socket file /tmp/mongodb-27017.sock Operation not permitted
 ```
